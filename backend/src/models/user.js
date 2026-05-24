@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
   datingMode: Boolean,
   onlineStatus: String,
   lastSeen: Date,
+  verificationToken: String,
+  verificationTokenExpiry: Date,
 });
 
 const User = mongoose.model("user", userSchema);
