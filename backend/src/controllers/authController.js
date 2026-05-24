@@ -148,13 +148,28 @@ const loginUser = async (req, res) => {
 
   return res.status(200).json({
     message: "Login successful",
-
     token,
   });
 };
 
+const getProfile = async (req, res) => {
+  const userId = req.user.userId;
+  const user = await User.findById(userId).select(
+    "-passwordHash -verificationToken",
+  );
+  if (!user) {
+    return res.status(404).json({
+      message: "cannot find user",
+    });
+  }
+  return res.status(200).json({
+    message: "Profile get successfull",
+    user,
+  });
+};
 module.exports = {
   userRegistration,
   verifyEmail,
   loginUser,
+  getProfile,
 };
