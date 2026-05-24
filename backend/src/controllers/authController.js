@@ -2,6 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const resend = require("../config/resend");
+const jwt = require("jsonwebtoken");
 
 const userRegistration = async (req, res) => {
   const { fullName, username, email, password } = req.body;
@@ -76,6 +77,8 @@ const userRegistration = async (req, res) => {
     });
   }
 };
+
+//email verification function
 const verifyEmail = async (req, res) => {
   const { token } = req.query;
   const user = await User.findOne({
@@ -102,7 +105,56 @@ const verifyEmail = async (req, res) => {
     message: "Email verified successfully",
   });
 };
+
+//login function
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email?.trim() || !password?.trim()) {
+    return res.status(400).json({
+      message: "All fields are required",
+    });
+  }
+
+  const user = await User.findOne({ email });
+
+  if (user == null) {
+    return res.status(400).json({
+      message: "Invalid credentials",
+    });
+  }
+  const isPasswordCorrect = await bcrypt.compare(password, user.passwordHash);
+  if (isPasswordCorrect == false) {
+    return res.status(400).json({
+      message: "Invalid credentials",
+    });
+  }
+
+  if (user.emailVerified == false) {
+    return res.status(400).json({
+      message: "Please verify your email first",
+    });
+  }
+
+  const token = jwt.sign(
+    {
+      userId: user._id,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    },
+  );
+
+  return res.status(200).json({
+    message: "Login successful",
+
+    token,
+  });
+};
+
 module.exports = {
   userRegistration,
   verifyEmail,
+  loginUser,
 };
