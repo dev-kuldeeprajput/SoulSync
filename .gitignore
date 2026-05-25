@@ -1,2 +1,16 @@
 node_modules
 .env
+*.log
+coverage
+
+mobile/node_modules
+mobile/android/.gradle
+mobile/android/build
+mobile/android/app/build
+mobile/android/local.properties
+mobile/ios/build
+mobile/.idea
+mobile/.vscode
+mobile/android/app/debug
+mobile/android/app/release
+mobile/android/app/debug.keystore
