@@ -14,7 +14,7 @@ import Feather from '@react-native-vector-icons/feather';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -113,7 +113,7 @@ const LoginScreen = () => {
             </View>
             <Text style={styles.noAccount}>
               Don't have an account{' '}
-              <Text style={styles.signUpLine} onPress={() => {}}>
+              <Text style={styles.signUpLine} onPress={() => navigation.navigate('Register')}>
                 Sign Up
               </Text>
             </Text>
