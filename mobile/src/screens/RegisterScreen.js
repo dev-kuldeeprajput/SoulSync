@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,11 +18,67 @@ import { Picker } from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 
 const RegisterScreen = ({ navigation }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [fullName, setFulllName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [gender, setGender] = useState('');
   const [dob, setDob] = useState(new Date());
+  const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const [isDobSelected, setIsDobSelected] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+  const validateForm = () => {
+    if (!fullName.trim()) {
+      return 'Please enter your full name';
+    }
+
+    if (!email.trim()) {
+      return 'Please enter your email';
+    }
+
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+
+    if (!gender) {
+      return 'Please select your gender';
+    }
+
+    if (!isDobSelected) {
+      return 'Please select your date of birth';
+    }
+
+    if (!password) {
+      return 'Please enter a password';
+    }
+
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    if (!passwordRegex.test(password)) {
+      return 'Password must contain uppercase, lowercase and a number';
+    }
+
+    if (password !== confirmPassword) {
+      return 'Passwords do not match';
+    }
+
+    return null;
+  };
+
+  const handleSignUp = () => {
+    const error = validateForm();
+
+    if (error) {
+      Alert.alert(error);
+      return;
+    }
+
+    // API call
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
@@ -48,6 +105,7 @@ const RegisterScreen = ({ navigation }) => {
                   placeholder="Full Name"
                   placeholderTextColor={COLORS.placeholder}
                   style={styles.input}
+                  onChangeText={setFulllName}
                 />
               </View>
               <View style={styles.inputContainer}>
@@ -56,6 +114,7 @@ const RegisterScreen = ({ navigation }) => {
                   placeholder="Email Address"
                   placeholderTextColor={COLORS.placeholder}
                   style={styles.input}
+                  onChangeText={setEmail}
                 />
               </View>
 
@@ -66,6 +125,7 @@ const RegisterScreen = ({ navigation }) => {
                   placeholderTextColor={COLORS.placeholder}
                   style={styles.input}
                   secureTextEntry={!showPassword}
+                  onChangeText={setPassword}
                 />
                 <Pressable onPress={() => setShowPassword(!showPassword)}>
                   <Feather
@@ -83,6 +143,7 @@ const RegisterScreen = ({ navigation }) => {
                   placeholderTextColor={COLORS.placeholder}
                   style={styles.input}
                   secureTextEntry={!showPassword}
+                  onChangeText={setConfirmPassword}
                 />
                 <Pressable onPress={() => setShowPassword(!showPassword)}>
                   <Feather
@@ -149,7 +210,7 @@ const RegisterScreen = ({ navigation }) => {
               </Text>
             </Pressable>
 
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={handleSignUp}>
               <LinearGradient
                 colors={[
                   COLORS.gradientStart,
