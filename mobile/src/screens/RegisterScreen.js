@@ -27,6 +27,7 @@ const RegisterScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const [isDobSelected, setIsDobSelected] = useState(false);
+  const [error, setError] = useState('');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
@@ -71,6 +72,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSignUp = () => {
     const error = validateForm();
+    setError(error);
 
     if (error) {
       Alert.alert(error);
@@ -116,6 +118,7 @@ const RegisterScreen = ({ navigation }) => {
                   style={styles.input}
                   onChangeText={setEmail}
                 />
+              
               </View>
 
               <View style={styles.inputContainer}>
