@@ -6,16 +6,44 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
+  Alert,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import COLORS from '../constants/colors';
 import Feather from '@react-native-vector-icons/feather';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+
+  const validateLogin = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      return 'Please enter your email';
+    }
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+    if (!password.trim()) {
+      return 'Please enter your password';
+    }
+    return null;
+  };
+
+  const handleLogin = () => {
+    const error = validateLogin();
+    setError(error);
+    if (error) {
+      Alert.alert(error);
+      return;
+    }
+    Alert.alert('Success', 'Login successful');
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
@@ -40,6 +68,7 @@ const LoginScreen = ({navigation}) => {
                   placeholder="Email or Username"
                   placeholderTextColor={COLORS.placeholder}
                   style={styles.input}
+                  onChangeText={setEmail}
                 />
               </View>
 
@@ -50,6 +79,7 @@ const LoginScreen = ({navigation}) => {
                   placeholderTextColor={COLORS.placeholder}
                   style={styles.input}
                   secureTextEntry={!showPassword}
+                  onChangeText={setPassword}
                 />
                 <Pressable onPress={() => setShowPassword(!showPassword)}>
                   <Feather
@@ -63,7 +93,7 @@ const LoginScreen = ({navigation}) => {
             </View>
             <Text style={styles.forgot}>Forgot Password?</Text>
 
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={handleLogin}>
               <LinearGradient
                 colors={[
                   COLORS.gradientStart,
@@ -113,7 +143,10 @@ const LoginScreen = ({navigation}) => {
             </View>
             <Text style={styles.noAccount}>
               Don't have an account{' '}
-              <Text style={styles.signUpLine} onPress={() => navigation.navigate('Register')}>
+              <Text
+                style={styles.signUpLine}
+                onPress={() => navigation.navigate('Register')}
+              >
                 Sign Up
               </Text>
             </Text>
@@ -241,7 +274,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     color: COLORS.textPrimary,
-    gap:20,
+    gap: 20,
   },
   signUpLine: {
     color: COLORS.link,

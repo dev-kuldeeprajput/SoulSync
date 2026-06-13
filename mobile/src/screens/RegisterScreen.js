@@ -28,10 +28,10 @@ const RegisterScreen = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [isDobSelected, setIsDobSelected] = useState(false);
   const [error, setError] = useState('');
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
+  
   const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!fullName.trim()) {
       return 'Please enter your full name';
     }
@@ -78,6 +78,7 @@ const RegisterScreen = ({ navigation }) => {
       Alert.alert(error);
       return;
     }
+      Alert.alert('Success', 'registration successful');
 
     // API call
   };
