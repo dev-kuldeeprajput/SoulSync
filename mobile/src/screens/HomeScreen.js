@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from '@react-native-vector-icons/feather';
 import COLORS from '../constants/colors';
 import LinearGradient from 'react-native-linear-gradient';
+import BottomNavigation from '../components/BottomNavigation';
 
 const recommendations = [
   {
@@ -145,32 +146,7 @@ const HomeScreen = () => {
           </ScrollView>
         </ScrollView>
       </View>
-
-      <View style={styles.bottomNav}>
-        <Pressable style={styles.navItem}>
-          <Feather name="home" size={24} color={COLORS.primary} />
-          <Text style={styles.activeNavText}>Home</Text>
-        </Pressable>
-
-        <Pressable style={styles.navItem}>
-          <Feather name="heart" size={24} color={COLORS.textSecondary} />
-          <Text style={styles.navText}>Matches</Text>
-        </Pressable>
-
-        <Pressable style={styles.navItem}>
-          <Feather
-            name="message-circle"
-            size={24}
-            color={COLORS.textSecondary}
-          />
-          <Text style={styles.navText}>Chats</Text>
-        </Pressable>
-
-        <Pressable style={styles.navItem}>
-          <Feather name="user" size={24} color={COLORS.textSecondary} />
-          <Text style={styles.navText}>Profile</Text>
-        </Pressable>
-      </View>
+      <BottomNavigation activeTab="home" navigation={navigation} />
     </SafeAreaView>
   );
 };
@@ -359,32 +335,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
     fontWeight: '700',
-  },
-
-  bottomNav: {
-    height: 75,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-  },
-
-  navItem: {
-    alignItems: 'center',
-  },
-
-  activeNavText: {
-    color: COLORS.primary,
-    marginTop: 4,
-    fontSize: 12,
-  },
-
-  navText: {
-    color: COLORS.textSecondary,
-    marginTop: 4,
-    fontSize: 12,
   },
 });
 
