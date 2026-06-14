@@ -35,7 +35,7 @@ const recommendations = [
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
   },
 ];
-const HomeScreen = () => {
+const HomeScreen = ({ activeTab, navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="white" barStyle="dark-content" />

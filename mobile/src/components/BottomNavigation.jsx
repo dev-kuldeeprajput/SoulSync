@@ -3,27 +3,78 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Feather from '@react-native-vector-icons/feather';
 import COLORS from '../constants/colors';
 
-const BottomNavigation = ({}) => {
+const BottomNavigation = ({ activeTab, navigation }) => {
   return (
     <View style={styles.bottomNav}>
-      <Pressable style={styles.navItem}>
-        <Feather name="home" size={24} color={COLORS.textSecondary} />
-        <Text style={styles.navText}>Home</Text>
+      <Pressable
+        style={styles.navItem}
+        onPress={() => navigation.navigate('Home')}
+      >
+        <Feather
+          name="home"
+          size={24}
+          color={activeTab === 'home' ? COLORS.primary : COLORS.textSecondary}
+        />
+        <Text
+          style={[styles.navText, activeTab === 'home' && styles.activeNavText]}
+        >
+          Home
+        </Text>
       </Pressable>
 
       <Pressable style={styles.navItem}>
-        <Feather name="heart" size={24} color={COLORS.textSecondary} />
-        <Text style={styles.navText}>Matches</Text>
+        <Feather
+          name="heart"
+          size={24}
+          color={
+            activeTab === 'matches' ? COLORS.primary : COLORS.textSecondary
+          }
+        />
+        <Text
+          style={[
+            styles.navText,
+            activeTab === 'matches' && styles.activeNavText,
+          ]}
+        >
+          Matches
+        </Text>
       </Pressable>
 
       <Pressable style={styles.navItem}>
-        <Feather name="message-circle" size={24} color={COLORS.textSecondary} />
-        <Text style={styles.navText}>Chats</Text>
+        <Feather
+          name="message-circle"
+          size={24}
+          color={activeTab === 'chats' ? COLORS.primary : COLORS.textSecondary}
+        />
+        <Text
+          style={[
+            styles.navText,
+            activeTab === 'chats' && styles.activeNavText,
+          ]}
+        >
+          Chats
+        </Text>
       </Pressable>
 
-      <Pressable style={styles.navItem}>
-        <Feather name="user" size={24} color={COLORS.primary} />
-        <Text style={styles.activeNavText}>Profile</Text>
+      <Pressable
+        style={styles.navItem}
+        onPress={() => navigation.navigate('Profile')}
+      >
+        <Feather
+          name="user"
+          size={24}
+          color={
+            activeTab === 'profile' ? COLORS.primary : COLORS.textSecondary
+          }
+        />
+        <Text
+          style={[
+            styles.navText,
+            activeTab === 'profile' && styles.activeNavText,
+          ]}
+        >
+          Profile
+        </Text>
       </Pressable>
     </View>
   );
@@ -43,15 +94,13 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
   },
-
   activeNavText: {
-    color: COLORS.primary,
     marginTop: 4,
     fontSize: 12,
+    color: COLORS.primary,
   },
 
   navText: {
-    color: COLORS.textSecondary,
     marginTop: 4,
     fontSize: 12,
   },

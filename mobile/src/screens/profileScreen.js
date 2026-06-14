@@ -15,7 +15,7 @@ import COLORS from '../constants/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import BottomNavigation from '../components/BottomNavigation';
 
-const profileScreen = () => {
+const ProfileScreen = ({ navigation, activeTab }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -343,4 +343,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default profileScreen;
+export default ProfileScreen;
