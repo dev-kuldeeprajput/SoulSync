@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   Alert,
+  StatusBar
 } from 'react-native';
 import React, { use, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -46,6 +47,8 @@ const LoginScreen = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.safeArea}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+      
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.introSection}>
