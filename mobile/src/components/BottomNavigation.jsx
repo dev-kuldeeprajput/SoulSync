@@ -43,7 +43,10 @@ const BottomNavigation = ({ activeTab, navigation }) => {
         </Text>
       </Pressable>
 
-      <Pressable style={styles.navItem}>
+      <Pressable
+        style={styles.navItem}
+        onPress={() => navigation.navigate('Chats')}
+      >
         <Feather
           name="message-circle"
           size={24}
@@ -92,8 +95,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    position:'fix',
-    bottom:0,
+    position: 'fix',
+    bottom: 0,
   },
 
   navItem: {

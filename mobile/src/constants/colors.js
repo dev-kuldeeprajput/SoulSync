@@ -12,6 +12,10 @@ const COLORS = {
   background: '#FAFAFA',
   surface: '#FFFFFF',
 
+  //cards
+  cardSecondary: '#FAF5FF',
+  cardPrimary: '#FFFFFF',
+
   // Text
   textPrimary: '#111827',
   textSecondary: '#6B7280',

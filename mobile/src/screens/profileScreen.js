@@ -68,7 +68,7 @@ const ProfileScreen = ({ navigation, activeTab }) => {
               <Feather
                 name="heart"
                 size={25}
-                color="#EBDCFB"
+                color={COLORS.primary}
                 style={styles.bioHeart}
               />
             </View>
@@ -179,14 +179,14 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 2,
   },
   profileCard: {
     marginTop: 25,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.cardPrimary,
     borderRadius: 30,
     padding: 25,
     alignItems: 'center',
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   bioCard: {
     marginTop: 20,
-    backgroundColor: '#FAF5FF',
+    backgroundColor: COLORS.cardSecondary,
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 25,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
 
   interestsCard: {
     marginTop: 20,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.cardPrimary,
     borderRadius: 25,
     padding: 20,
     elevation: 4,
@@ -283,9 +283,9 @@ const styles = StyleSheet.create({
   },
 
   interestChip: {
-    backgroundColor: '#F7F0FF',
+    backgroundColor: COLORS.cardSecondary,
     borderWidth: 1,
-    borderColor: '#E8D9FF',
+    borderColor: COLORS.border,
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 20,
@@ -293,11 +293,10 @@ const styles = StyleSheet.create({
 
   actionCard: {
     marginTop: 15,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.cardPrimary,
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 18,
-
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -313,8 +312,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#F7F0FF',
-
+    backgroundColor: COLORS.cardPrimary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -323,7 +321,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#FFF1F1',
+    backgroundColor: COLORS.cardPrimary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -339,7 +337,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontSize: 18,
     fontWeight: '600',
-    color: '#FF5A5F',
+    color: COLORS.error,
   },
 });
 

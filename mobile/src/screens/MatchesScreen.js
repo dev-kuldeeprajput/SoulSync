@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 8,
 
-    backgroundColor: '#22C55E',
+    backgroundColor: COLORS.success,
 
     borderWidth: 2,
     borderColor: COLORS.white,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
 
   ageStatus: {
     marginTop: 3,
-    color: '#22C55E',
+    color: COLORS.success,
     fontWeight: '600',
   },
 
