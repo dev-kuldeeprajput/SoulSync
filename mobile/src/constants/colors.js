@@ -16,6 +16,10 @@ const COLORS = {
   cardSecondary: '#FAF5FF',
   cardPrimary: '#FFFFFF',
 
+  // chats
+  chatBubbleMe: '#F3EEFF',
+  chatBubbleOther: '#edecf0',
+
   // Text
   textPrimary: '#111827',
   textSecondary: '#6B7280',

@@ -75,7 +75,11 @@ const ChatsScreen = ({ ativeTab, navigation }) => {
           }}
         >
           {chats.map(item => (
-            <Pressable key={item.id} style={styles.chatCard}>
+            <Pressable
+              key={item.id}
+              style={styles.chatCard}
+              onPress={() => navigation.navigate('Chat')}
+            >
               <View style={styles.imageContainer}>
                 <Image source={{ uri: item.image }} style={styles.avatar} />
 

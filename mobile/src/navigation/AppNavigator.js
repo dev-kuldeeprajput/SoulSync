@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MatchesScreen from '../screens/MatchesScreen';
 import ChatsScreen from '../screens/ChatsScreen';
+import ChatScreen from '../screens/ChatScreen';
 const Stack = createNativeStackNavigator();
 const AppNavigator = () => {
   return (
@@ -23,6 +24,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Matches" component={MatchesScreen} />
         <Stack.Screen name="Chats" component={ChatsScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
