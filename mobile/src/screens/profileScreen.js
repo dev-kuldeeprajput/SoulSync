@@ -14,8 +14,11 @@ import Feather from '@react-native-vector-icons/feather';
 import COLORS from '../constants/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import BottomNavigation from '../components/BottomNavigation';
+import { currentUserId } from '../data/currentUser';
+import { users } from '../data/users';
 
 const ProfileScreen = ({ navigation, activeTab }) => {
+  const currentUser = users.find(user => user.id === currentUserId);
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -41,7 +44,7 @@ const ProfileScreen = ({ navigation, activeTab }) => {
             <View style={styles.avatarWrapper}>
               <Image
                 source={{
-                  uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+                  uri: currentUser.profilePhoto,
                 }}
                 style={styles.avatar}
               />
@@ -51,19 +54,19 @@ const ProfileScreen = ({ navigation, activeTab }) => {
               </Pressable>
             </View>
 
-            <Text style={styles.name}>Kuldeep, 21</Text>
+            <Text style={styles.name}>
+              {currentUser.fullName}, {currentUser.age}
+            </Text>
 
             <View style={styles.locationRow}>
               <Feather name="map-pin" size={16} color={COLORS.primary} />
 
-              <Text style={styles.location}>Haryana, India</Text>
+              <Text style={styles.location}>{currentUser.city}</Text>
             </View>
             <View style={styles.bioCard}>
               <Text style={styles.quoteMark}>❝</Text>
 
-              <Text style={styles.bioText}>
-                Love technology, books and meaningful conversations.
-              </Text>
+              <Text style={styles.bioText}>{currentUser.bio}</Text>
 
               <Feather
                 name="heart"
@@ -77,29 +80,11 @@ const ProfileScreen = ({ navigation, activeTab }) => {
             <Text style={styles.interestsTitle}>My Interests</Text>
 
             <View style={styles.interestsContainer}>
-              <View style={styles.interestChip}>
-                <Text>💻 Technology</Text>
-              </View>
-
-              <View style={styles.interestChip}>
-                <Text>📚 Reading</Text>
-              </View>
-
-              <View style={styles.interestChip}>
-                <Text>🎵 Music</Text>
-              </View>
-
-              <View style={styles.interestChip}>
-                <Text>✈ Travel</Text>
-              </View>
-
-              <View style={styles.interestChip}>
-                <Text>☕ Coffee</Text>
-              </View>
-
-              <View style={styles.interestChip}>
-                <Text>🏋 Fitness</Text>
-              </View>
+              {currentUser.interests.map(interest => (
+                <View style={styles.interestChip} key={interest}>
+                  <Text>{interest}</Text>
+                </View>
+              ))}
             </View>
           </View>
           <Pressable style={styles.actionCard}>
@@ -240,6 +225,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 25,
     minHeight: 150,
+    width: '100%',
     position: 'relative',
   },
 
