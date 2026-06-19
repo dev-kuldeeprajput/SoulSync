@@ -11,34 +11,12 @@ import {
 import Feather from '@react-native-vector-icons/feather';
 import COLORS from '../constants/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { messages } from '../data/messages';
+import { currentUserId } from '../data/currentUser';
 
-const ChatScreen = ({ navigation }) => {
-  const messages = [
-    {
-      id: 1,
-      text: 'Hey! 👋',
-      sender: 'other',
-      time: '11:10 AM',
-    },
-    {
-      id: 2,
-      text: 'Hey Aisha! 😊',
-      sender: 'me',
-      time: '11:11 AM',
-    },
-    {
-      id: 3,
-      text: "How's your day going?",
-      sender: 'other',
-      time: '11:12 AM',
-    },
-    {
-      id: 4,
-      text: 'Pretty good so far! 🚀',
-      sender: 'me',
-      time: '11:13 AM',
-    },
-  ];
+const ChatScreen = ({ route, navigation }) => {
+  const { chatId, otherUser } = route.params;
+  const chatMessages = messages.filter(message => message.chatId === chatId);
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -49,18 +27,20 @@ const ChatScreen = ({ navigation }) => {
         <View style={styles.userInfo}>
           <Image
             source={{
-              uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+              uri: otherUser.profilePhoto,
             }}
             style={styles.avatar}
           />
 
           <View>
-            <Text style={styles.userName}>Aisha Khan</Text>
+            <Text style={styles.userName}>{otherUser.fullName}</Text>
 
             <View style={styles.onlineRow}>
               <View style={styles.onlineDot} />
 
-              <Text style={styles.onlineText}>Online</Text>
+              <Text style={styles.onlineText}>
+                {otherUser.isOnline ? 'Online' : 'offline'}
+              </Text>
             </View>
           </View>
         </View>
@@ -79,26 +59,26 @@ const ChatScreen = ({ navigation }) => {
             paddingHorizontal: 10,
           }}
         >
-          {messages.map(item => (
+          {chatMessages.map(item => (
             <View
               key={item.id}
               style={[
                 styles.messageWrapper,
 
-                item.sender === 'me' ? styles.myWrapper : styles.otherWrapper,
+                item.senderId === currentUserId ? styles.myWrapper : styles.otherWrapper,
               ]}
             >
               <View
                 style={[
                   styles.messageBubble,
 
-                  item.sender === 'me' ? styles.myBubble : styles.otherBubble,
+                  item.senderId === currentUserId ? styles.myBubble : styles.otherBubble,
                 ]}
               >
                 <Text style={styles.messageText}>{item.text}</Text>
               </View>
 
-              <Text style={styles.time}>{item.time}</Text>
+              <Text style={styles.time}>{item.createdAt}</Text>
             </View>
           ))}
         </ScrollView>

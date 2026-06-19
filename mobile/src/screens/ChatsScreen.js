@@ -12,37 +12,15 @@ import Feather from '@react-native-vector-icons/feather';
 import COLORS from '../constants/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavigation from '../components/BottomNavigation';
+import { chats } from '../data/chats';
+import { users } from '../data/users';
+import { currentUserId } from '../data/currentUser';
 
 const ChatsScreen = ({ ativeTab, navigation }) => {
-  const chats = [
-    {
-      id: 1,
-      name: 'Aisha Khan',
-      message: "Hey! How's your day? 😊",
-      time: '2m',
-      unread: 2,
-      isOnline: true,
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
-    },
-    {
-      id: 2,
-      name: 'Riya Sharma',
-      message: 'Coffee date someday? ☕',
-      time: '15m',
-      unread: 0,
-      isOnline: true,
-      image: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df',
-    },
-    {
-      id: 3,
-      name: 'Sara Ali',
-      message: "What's your favorite song? 🎵",
-      time: '1h',
-      unread: 1,
-      isOnline: false,
-      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9',
-    },
-  ];
+  const currentUserChats = chats.filter(chat =>
+    chat.participants.includes(currentUserId),
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -74,37 +52,49 @@ const ChatsScreen = ({ ativeTab, navigation }) => {
             paddingBottom: 100,
           }}
         >
-          {chats.map(item => (
-            <Pressable
-              key={item.id}
-              style={styles.chatCard}
-              onPress={() => navigation.navigate('Chat')}
-            >
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: item.image }} style={styles.avatar} />
+          {currentUserChats.map(chat => {
+            const otherUserId = chat.participants.find(
+              id => id !== currentUserId,
+            );
+            const otherUser = users.find(user => user.id === otherUserId);
+            if (!otherUser) return null;
+            return (
+              <Pressable
+                key={chat.id}
+                style={styles.chatCard}
+                onPress={() =>
+                  navigation.navigate('Chat', { chatId: chat.id, otherUser })
+                }
+              >
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: otherUser.profilePhoto }}
+                    style={styles.avatar}
+                  />
 
-                {item.isOnline && <View style={styles.onlineDot} />}
-              </View>
+                  {otherUser.isOnline && <View style={styles.onlineDot} />}
+                </View>
 
-              <View style={styles.chatInfo}>
-                <Text style={styles.chatName}>{item.name}</Text>
+                <View style={styles.chatInfo}>
+                  <Text style={styles.chatName}>{otherUser.fullName}</Text>
 
-                <Text numberOfLines={1} style={styles.lastMessage}>
-                  {item.message}
-                </Text>
-              </View>
+                  <Text numberOfLines={1} style={styles.lastMessage}>
+                    {chat.lastMessage}
+                  </Text>
+                </View>
 
-              <View style={styles.rightSection}>
-                <Text style={styles.time}>{item.time}</Text>
+                <View style={styles.rightSection}>
+                  <Text style={styles.time}>{chat.lastMessageTime}</Text>
 
-                {item.unread > 0 && (
-                  <View style={styles.unreadBadge}>
-                    <Text style={styles.unreadText}>{item.unread}</Text>
-                  </View>
-                )}
-              </View>
-            </Pressable>
-          ))}
+                  {chat.unreadCount > 0 && (
+                    <View style={styles.unreadBadge}>
+                      <Text style={styles.unreadText}>{chat.unreadCount}</Text>
+                    </View>
+                  )}
+                </View>
+              </Pressable>
+            );
+          })}
         </ScrollView>
       </View>
 
