@@ -5,13 +5,13 @@ const resend = require("../config/resend");
 const jwt = require("jsonwebtoken");
 
 const userRegistration = async (req, res) => {
-  const { fullName, username, email, password } = req.body;
+  const { fullName, email, password, gender } = req.body;
   try {
     if (
       !fullName?.trim() ||
-      !username?.trim() ||
       !email?.trim() ||
-      !password?.trim()
+      !password?.trim() ||
+      !gender?.trim()
     ) {
       return res.status(400).json({
         message: "All fields are required",
@@ -28,16 +28,6 @@ const userRegistration = async (req, res) => {
       });
     }
 
-    const existingUsername = await User.findOne({
-      username,
-    });
-
-    if (existingUsername) {
-      return res.status(400).json({
-        message: "username already exist",
-      });
-    }
-
     const passwordHash = await bcrypt.hash(password, 10); //password hashed using bcrypt
 
     const verificationToken = crypto.randomBytes(32).toString("hex"); // verification token generation from crypto
@@ -45,7 +35,6 @@ const userRegistration = async (req, res) => {
 
     await User.create({
       fullName,
-      username,
       email,
       passwordHash,
       verificationToken,

@@ -7,7 +7,7 @@ import {
   TextInput,
   Pressable,
   Alert,
-  StatusBar
+  StatusBar,
 } from 'react-native';
 import React, { use, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +15,7 @@ import COLORS from '../constants/colors';
 import Feather from '@react-native-vector-icons/feather';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+import api from '../services/api';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -36,19 +37,26 @@ const LoginScreen = ({ navigation }) => {
     return null;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const error = validateLogin();
     setError(error);
     if (error) {
       Alert.alert(error);
       return;
     }
-    Alert.alert('Success', 'Login successful');
+
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      Alert.alert('Login Success', response.data.message);
+      navigation.navigate('Home');
+    } catch (error) {
+      Alert.alert(error.response?.data.message);
+    }
   };
   return (
     <SafeAreaView style={styles.safeArea}>
-        <StatusBar backgroundColor="white" barStyle="dark-content" />
-      
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
+
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.introSection}>
@@ -148,7 +156,7 @@ const LoginScreen = ({ navigation }) => {
               Don't have an account{' '}
               <Text
                 style={styles.signUpLine}
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate('Register')}
               >
                 Sign Up
               </Text>

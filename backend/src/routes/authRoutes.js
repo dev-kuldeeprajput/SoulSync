@@ -6,10 +6,9 @@ const { getProfile } = require("../controllers/authController");
 const { verifyJWT } = require("../middleware/authMiddleware");
 
 const router = express.Router();
-
 router.post("/register", userRegistration);
 router.get("/verify-email", verifyEmail);
-router.get("/login", loginUser);
+router.post("/login", loginUser);
 router.get("/profile", verifyJWT, getProfile);
 
 module.exports = router;

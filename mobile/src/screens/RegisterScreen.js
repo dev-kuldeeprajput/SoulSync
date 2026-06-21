@@ -15,7 +15,7 @@ import Feather from '@react-native-vector-icons/feather';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { Picker } from '@react-native-picker/picker';
-import DatePicker from 'react-native-date-picker';
+import api from '../services/api';
 
 const RegisterScreen = ({ navigation }) => {
   const [fullName, setFulllName] = useState('');
@@ -23,12 +23,9 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [gender, setGender] = useState('');
-  const [dob, setDob] = useState(new Date());
   const [showPassword, setShowPassword] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [isDobSelected, setIsDobSelected] = useState(false);
   const [error, setError] = useState('');
-  
+
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
@@ -46,10 +43,6 @@ const RegisterScreen = ({ navigation }) => {
 
     if (!gender) {
       return 'Please select your gender';
-    }
-
-    if (!isDobSelected) {
-      return 'Please select your date of birth';
     }
 
     if (!password) {
@@ -70,7 +63,7 @@ const RegisterScreen = ({ navigation }) => {
     return null;
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const error = validateForm();
     setError(error);
 
@@ -78,9 +71,19 @@ const RegisterScreen = ({ navigation }) => {
       Alert.alert(error);
       return;
     }
-      Alert.alert('Success', 'registration successful');
-
     // API call
+    try {
+      const response = await api.post('/auth/register', {
+        fullName,
+        email,
+        password,
+        gender,
+      });
+      Alert.alert('success', response?.data.message);
+      navigation.navigate('Login');
+    } catch (error) {
+      Alert.alert(error.data.message);
+    }
   };
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -119,7 +122,6 @@ const RegisterScreen = ({ navigation }) => {
                   style={styles.input}
                   onChangeText={setEmail}
                 />
-              
               </View>
 
               <View style={styles.inputContainer}>
@@ -177,42 +179,6 @@ const RegisterScreen = ({ navigation }) => {
                 <Picker.Item label="Other" value="other" />
               </Picker>
             </View>
-
-            <Pressable
-              style={styles.inputContainer}
-              onPress={() => setOpen(true)}
-            >
-              <DatePicker
-                modal
-                open={open}
-                date={dob}
-                mode="date"
-                onConfirm={date => {
-                  setDob(date);
-                  setIsDobSelected(true);
-                  setOpen(false);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              />
-              <Feather name="calendar" size={24} color={COLORS.textSecondary} />
-              <Text
-                style={[
-                  styles.dobText,
-                  {
-                    color: isDobSelected
-                      ? COLORS.textPrimary
-                      : COLORS.placeholder,
-                  },
-                ]}
-              >
-                {' '}
-                {isDobSelected
-                  ? dob.toLocaleDateString('en-GB')
-                  : 'Select Date of Birth'}
-              </Text>
-            </Pressable>
 
             <Pressable onPress={handleSignUp}>
               <LinearGradient
@@ -287,7 +253,7 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
   },
   container: {
     padding: 20,
@@ -322,8 +288,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
     alignItems: 'center',
     borderRadius: 20,
-    height: 50,
-    marginTop: 10,
+    marginTop: 15,
     paddingHorizontal: 20,
     gap: 10,
   },
@@ -331,14 +296,15 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     flex: 1,
     fontSize: 16,
+    height: 55,
   },
   gender: {
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: 20,
-    height: 50,
-    marginTop: 10,
+    height: 55,
+    marginTop: 15,
     paddingHorizontal: 20,
     gap: 10,
     justifyContent: 'center',
@@ -347,18 +313,12 @@ const styles = StyleSheet.create({
   picker: {
     flex: 1,
   },
-  dobText: {
-    fontSize: 16,
-  },
-  pickerLabel: {
-    color: COLORS.textPrimary,
-  },
   registerBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 60,
-    marginTop: 10,
+    marginTop: 15,
     paddingHorizontal: 25,
     borderColor: COLORS.border,
     borderWidth: 1,
