@@ -80,7 +80,7 @@ const RegisterScreen = ({ navigation }) => {
         gender,
       });
       Alert.alert('success', response?.data.message);
-      navigation.navigate('Login');
+      navigation.replace('Login');
     } catch (error) {
       Alert.alert(error.data.message);
     }

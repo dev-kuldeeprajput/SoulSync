@@ -9,13 +9,14 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import COLORS from '../constants/colors';
 import Feather from '@react-native-vector-icons/feather';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import api from '../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -47,8 +48,10 @@ const LoginScreen = ({ navigation }) => {
 
     try {
       const response = await api.post('/auth/login', { email, password });
+      await AsyncStorage.setItem('token', response.data.token);
       Alert.alert('Login Success', response.data.message);
-      navigation.navigate('Home');
+
+      navigation.replace('Home');
     } catch (error) {
       Alert.alert(error.response?.data.message);
     }

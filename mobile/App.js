@@ -1,10 +1,6 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 import AppNavigator from './src/navigation/AppNavigator';
+import BootSplash from 'react-native-bootsplash';
+import { useEffect } from 'react';
 
 import {
   SafeAreaProvider,
@@ -12,6 +8,9 @@ import {
 } from 'react-native-safe-area-context';
 
 function App() {
+  useEffect(() => {
+    BootSplash.hide({ fade: true });
+  }, []);
   return (
     <SafeAreaProvider>
       <AppNavigator />
