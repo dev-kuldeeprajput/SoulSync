@@ -15,14 +15,14 @@ import COLORS from '../constants/colors';
 import Feather from '@react-native-vector-icons/feather';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import api from '../services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../context/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const { login } = useAuth();
 
   const validateLogin = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,15 +45,12 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert(error);
       return;
     }
-
     try {
-      const response = await api.post('/auth/login', { email, password });
-      await AsyncStorage.setItem('token', response.data.token);
-      Alert.alert('Login Success', response.data.message);
-
-      navigation.replace('Home');
+      const response = await login(email, password);
+      console.log(response);
+      Alert.alert(response?.data.message);
     } catch (error) {
-      Alert.alert(error.response?.data.message);
+      Alert.alert(error.response?.data?.message);
     }
   };
   return (

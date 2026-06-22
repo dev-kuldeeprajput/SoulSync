@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import AppNavigator from './src/navigation/AppNavigator';
 import BootSplash from 'react-native-bootsplash';
-import { useEffect } from 'react';
+import { AuthProvider } from './src/context/AuthContext';
 
 import {
   SafeAreaProvider,
@@ -13,7 +14,9 @@ function App() {
   }, []);
   return (
     <SafeAreaProvider>
-      <AppNavigator />
+      <AuthProvider>
+        <AppNavigator />
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }
